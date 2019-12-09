@@ -59,11 +59,11 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
 
   double JoyY = -JoyAccel1.GetY();
-  double SteeringX = RaceWheel.GetX();
+  double WheelX = RaceWheel.GetX();
   
   //Drive Code
   //Point Turning
-  if(SteeringX.GetRawButton(5)) {
+  if(WheelX.GetRawButton(5)) {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
