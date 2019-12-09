@@ -61,14 +61,36 @@ void Robot::RobotPeriodic() {
   double JoyY = -JoyAccel1.GetY();
   double WheelX = RaceWheel.GetX();
   
-  if (JoyY > 0.1|| JoyY < -0.1 ) {
+  //Drive Code
+  //Point Turning
+  if(WheelX.GetRawButton(5)) {
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -WheelX);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -WheelX);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -WheelX);   
+  } 
+  //Regular Turning
+  else if((WheelX < -0.01 || WheelX > 0.01) && (JoyY > 0.06 || JoyY < -0.06)){
+    RightFront.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
+    RightMid.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
+    RightBack.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
+    LeftFront.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+    LeftMid.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+    LeftBack.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+  }
+  //Code for driving straight  
+  else if (JoyY > 0.1|| JoyY < -0.1 ) {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY);
     RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY);
     RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY);
     RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY);                  
-  } else {
+  } 
+  //No Joystick Input
+  else {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);        
