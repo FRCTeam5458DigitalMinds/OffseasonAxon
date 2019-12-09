@@ -59,11 +59,11 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
 
   double JoyY = -JoyAccel1.GetY();
-  double WheelX = RaceWheel.GetX();
+  double SteeringX = RaceWheel.GetX();
   
   //Drive Code
   //Point Turning
-  if(WheelX.GetRawButton(5)) {
+  if(SteeringX.GetRawButton(5)) {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
@@ -73,12 +73,12 @@ void Robot::RobotPeriodic() {
   } 
   //Regular Turning
   else if((WheelX < -0.01 || WheelX > 0.01) && (JoyY > 0.06 || JoyY < -0.06)){
-    RightFront.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
-    RightMid.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
-    RightBack.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
-    LeftFront.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
-    LeftMid.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
-    LeftBack.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
   }
   //Code for driving straight  
   else if (JoyY > 0.1|| JoyY < -0.1 ) {
