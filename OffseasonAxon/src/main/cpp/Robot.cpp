@@ -33,6 +33,15 @@ WPI_VictorSPX LeftMotorOne{2};
 WPI_VictorSPX LeftMotorTwo{1};
 WPI_TalonSRX LeftMotorThree{0}; // Encoder
 
+//Elevator Motors
+WPI_TalonSRX ElevatorMotorOne{12};
+WPI_TalonSRX ElevatorMotorTwo{3}; // Encoder
+
+// Limit Switches
+frc::DigitalInput ElevatorLimitBottom{0};
+
+// Pneumatics
+
 //Joysticks, RaceWheel, and Xbox Controller
 frc::Joystick JoyAccel1{0}, Xbox{1}, RaceWheel{2};
 
@@ -45,8 +54,10 @@ void Robot::RobotInit() {
   RightMotorOne.SetInverted(true);
   RightMotorTwo.SetInverted(false);
   RightMotorThree.SetInverted(true);  
-}
 
+  //Elevator Motor
+  ElevatorMotorOne.SetSelectedSensorPosition(0.0);
+}
 
 /**
  * This function is called every robot packet, no matter the mode. Use
@@ -58,8 +69,24 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
 
+  //Controllers For Driving and Operating
   double JoyY = -JoyAccel1.GetY();
   double WheelX = RaceWheel.GetX();
+  double XboxRightAnalogY = Xbox.GetRawAxis(5);
+
+  // Elevator Limit Switch
+  if(ElevatorLimitBottom.Get()) {
+    ElevatorMotorOne.SetSelectedSensorPosition(0);
+  }
+
+  //Manual Elevator Movement
+  if (XboxRightAnalogY > 0.15 || XboxRightAnalogY < -0.15) {
+    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.25);
+    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.25);
+  } else {
+    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+  }
   
   //Drive Code
   //Point Turning
