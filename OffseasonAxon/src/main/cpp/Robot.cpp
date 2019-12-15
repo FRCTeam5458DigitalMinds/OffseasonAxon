@@ -26,7 +26,7 @@ TalonSRX srx = {0};
 
 // Right Side Drive Motors
 WPI_TalonSRX RightMotorOne{15}; // Encoder
-WPI_VictorSPX RightMotorTwo{5};
+WPI_VictorSPX RightMotorTwo{14};
 WPI_VictorSPX RightMotorThree{13};
 // Left Side Drive Motors
 WPI_VictorSPX LeftMotorOne{2};
@@ -51,9 +51,9 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
   srx.Set (ControlMode::PercentOutput, 0);
 
-  RightMotorOne.SetInverted(true);
-  RightMotorTwo.SetInverted(false);
-  RightMotorThree.SetInverted(true);  
+  LeftMotorOne.SetInverted(true);
+  LeftMotorTwo.SetInverted(true);
+  LeftMotorThree.SetInverted(true);  
 
   //Elevator Motor
   ElevatorMotorOne.SetSelectedSensorPosition(0.0);
@@ -81,8 +81,8 @@ void Robot::RobotPeriodic() {
 
   //Manual Elevator Movement
   if (XboxRightAnalogY > 0.15 || XboxRightAnalogY < -0.15) {
-    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.25);
-    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.25);
+    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
+    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
   } else {
     ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
@@ -90,7 +90,7 @@ void Robot::RobotPeriodic() {
   
   //Drive Code
   //Point Turning
-  if(WheelX.GetRawButton(5)) {
+  if (RaceWheel.GetRawButton(5)) {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
@@ -100,12 +100,12 @@ void Robot::RobotPeriodic() {
   } 
   //Regular Turning
   else if((WheelX < -0.01 || WheelX > 0.01) && (JoyY > 0.06 || JoyY < -0.06)){
-    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
-    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
-    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX - JoyY);
-    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
-    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
-    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -JoyY - WheelX);
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX + JoyY);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX + JoyY);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX + JoyY);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY - WheelX);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY - WheelX);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, JoyY - WheelX);
   }
   //Code for driving straight  
   else if (JoyY > 0.1|| JoyY < -0.1 ) {
