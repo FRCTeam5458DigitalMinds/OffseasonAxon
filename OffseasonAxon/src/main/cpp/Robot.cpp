@@ -38,7 +38,7 @@ WPI_TalonSRX ElevatorMotorOne{12};
 WPI_TalonSRX ElevatorMotorTwo{3}; // Encoder
 
 // Limit Switches
-frc::DigitalInput ElevatorLimitBottom{0};
+frc::DigitalInput ElevatorLimitBottom{0}; 
 
 // Pneumatics
 
@@ -57,7 +57,12 @@ void Robot::RobotInit() {
 
   //Elevator Motor
   ElevatorMotorOne.SetSelectedSensorPosition(0.0);
+
+  //Drivetrain motors
+  LeftMotorThree.SetSelectedSensorPosition(0.0);
+  RightMotorOne.SetSelectedSensorPosition(0.0);
 }
+
 
 /**
  * This function is called every robot packet, no matter the mode. Use
@@ -126,6 +131,9 @@ void Robot::RobotPeriodic() {
     RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
   }
 
+  //Information to be printed
+  std::cout << "Right: " << RightMotorOne.GetSelectedSensorPosition() << std::endl;
+  std::cout << "Left: " << LeftMotorThree.GetSelectedSensorPosition() << std::endl;
 }
 
 /**
