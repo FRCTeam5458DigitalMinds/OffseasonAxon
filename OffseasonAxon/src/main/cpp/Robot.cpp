@@ -37,6 +37,9 @@ WPI_TalonSRX LeftMotorThree{0}; // Encoder
 WPI_TalonSRX ElevatorMotorOne{12};
 WPI_TalonSRX ElevatorMotorTwo{3}; // Encoder
 
+// Gyro
+frc::ADXRS450_Gyro Gyro{};
+
 // Limit Switches
 frc::DigitalInput ElevatorLimitBottom{0}; 
 
@@ -49,6 +52,7 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
   srx.Set (ControlMode::PercentOutput, 0);
 
   LeftMotorOne.SetInverted(true);
@@ -165,6 +169,23 @@ void Robot::AutonomousPeriodic() {
     // Custom Auto goes here
   } else {
     // Default Auto goes here
+    double currentAngle = Gyro.GetAngle();
+    if (currentAngle < 90){
+      LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
+      LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
+      LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);        
+      RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
+      RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
+      RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
+    }
+    else {
+      LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+      LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+      LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);        
+      RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+      RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+      RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+  }
   }
 }
 
