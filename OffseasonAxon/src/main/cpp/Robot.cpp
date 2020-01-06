@@ -169,7 +169,7 @@ void Robot::AutonomousPeriodic() {
     // Custom Auto goes here
   } else {
     // Default Auto goes here
-    /*if (LeftMotorThree.GetSelectedSensorPosition < 4096) {
+    if (LeftMotorThree.GetSelectedSensorPosition < 4096){
       LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);        
@@ -184,7 +184,7 @@ void Robot::AutonomousPeriodic() {
       RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-    }*/
+    }
   }
 }
 
