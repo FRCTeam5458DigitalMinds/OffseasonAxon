@@ -37,9 +37,6 @@ WPI_TalonSRX LeftMotorThree{0}; // Encoder
 WPI_TalonSRX ElevatorMotorOne{12};
 WPI_TalonSRX ElevatorMotorTwo{3}; // Encoder
 
-// Gyro
-frc::ADXRS450_Gyro Gyro{};
-
 // Limit Switches
 frc::DigitalInput ElevatorLimitBottom{0}; 
 
@@ -169,8 +166,7 @@ void Robot::AutonomousPeriodic() {
     // Custom Auto goes here
   } else {
     // Default Auto goes here
-    double currentAngle = Gyro.GetAngle();
-    if (currentAngle < 90){
+    if (LeftMotorThree.GetSelectedSensorPosition < 4096){
       LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);        
