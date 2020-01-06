@@ -73,6 +73,7 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
+
 void Robot::RobotPeriodic() {
 
   //Controllers For Driving and Operating
@@ -131,10 +132,11 @@ void Robot::RobotPeriodic() {
     RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
   }
-
+/*
   //Information to be printed
   std::cout << "Right: " << RightMotorOne.GetSelectedSensorPosition() << std::endl;
   std::cout << "Left: " << LeftMotorThree.GetSelectedSensorPosition() << std::endl;
+*/
 }
 
 /**
@@ -148,6 +150,7 @@ void Robot::RobotPeriodic() {
  * if-else structure below with additional strings. If using the SendableChooser
  * make sure to add them to the chooser code above as well.
  */
+
 void Robot::AutonomousInit() {
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
@@ -166,7 +169,7 @@ void Robot::AutonomousPeriodic() {
     // Custom Auto goes here
   } else {
     // Default Auto goes here
-    if (LeftMotorThree.GetSelectedSensorPosition < 4096){
+    /*if (LeftMotorThree.GetSelectedSensorPosition < 4096) {
       LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);        
@@ -177,11 +180,11 @@ void Robot::AutonomousPeriodic() {
     else {
       LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-      LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);        
+      LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);         
       RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-  }
+    }*/
   }
 }
 
