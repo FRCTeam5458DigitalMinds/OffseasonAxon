@@ -17,8 +17,13 @@
 #include <frc/Joystick.h>
 #include <ctre/Phoenix.h>
 #include <frc/SpeedControllerGroup.h>
-#include <frc/drive/DifferentialDrive.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include "cameraserver/CameraServer.h"
+#include "NetworkTables/NetworkTable.h"
+#include <frc/drive/DifferentialDrive.h>
+#include "networktables/NetworkTableEntry.h"
+#include "networktables/NetworkTableInstance.h"
+
 
 TalonSRX srx = {0};
 
@@ -46,6 +51,9 @@ frc::DigitalInput ElevatorLimitBottom{0};
 frc::Joystick JoyAccel1{0}, Xbox{1}, RaceWheel{2};
 
 void Robot::RobotInit() {
+  //Limelight
+  frc::CameraServer::GetInstance()->StartAutomaticCapture(0);
+
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -80,6 +88,10 @@ void Robot::RobotPeriodic() {
   double JoyY = -JoyAccel1.GetY();
   double WheelX = RaceWheel.GetX();
   double XboxRightAnalogY = Xbox.GetRawAxis(5);
+  
+  //Information to be printed
+  std::cout << "Right: " << RightMotorOne.GetSelectedSensorPosition() << std::endl;
+  std::cout << "Left: " << LeftMotorThree.GetSelectedSensorPosition() << std::endl;
 
   // Elevator Limit Switch
   if(ElevatorLimitBottom.Get()) {
@@ -132,11 +144,6 @@ void Robot::RobotPeriodic() {
     RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
   }
-/*
-  //Information to be printed
-  std::cout << "Right: " << RightMotorOne.GetSelectedSensorPosition() << std::endl;
-  std::cout << "Left: " << LeftMotorThree.GetSelectedSensorPosition() << std::endl;
-*/
 }
 
 /**
@@ -169,7 +176,7 @@ void Robot::AutonomousPeriodic() {
     // Custom Auto goes here
   } else {
     // Default Auto goes here
-    if (LeftMotorThree.GetSelectedSensorPosition < 4096){
+    /*if (LeftMotorThree.GetSelectedSensorPosition() < 4096){
       LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
       LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);        
@@ -184,7 +191,7 @@ void Robot::AutonomousPeriodic() {
       RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-    }
+    }*/
   }
 }
 
