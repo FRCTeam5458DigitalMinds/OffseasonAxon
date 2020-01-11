@@ -194,12 +194,12 @@ void Robot::RobotPeriodic() {
     RightMotorOne.SetSelectedSensorPosition(0);
   } 
   else if (JoyAccel1.GetRawButton(1) && (LeftMotorThree.GetSelectedSensorPosition() < 25000 && RightMotorOne.GetSelectedSensorPosition() > -25000)){
-    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
-    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
-    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
-    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
-    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
-    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.5);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.5);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.5);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.5);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.5);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.5);
   }
 
   //Drive Code
