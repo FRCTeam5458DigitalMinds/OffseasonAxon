@@ -85,6 +85,12 @@ void Robot::RobotInit() {
   //Drivetrain Motor Encoders
   LeftMotorThree.SetSelectedSensorPosition(0.0);
   RightMotorOne.SetSelectedSensorPosition(0.0);
+
+  LeftMotorThree.SetSelectedSensorPosition(0);
+  RightMotorOne.SetSelectedSensorPosition(0);
+  ElevatorMotorOne.SetSelectedSensorPosition(0);
+  CargoIntake.Set(false);
+  HatchIntake.Set(false);
 }
 
 
@@ -104,14 +110,14 @@ void Robot::RobotPeriodic() {
   double WheelX = RaceWheel.GetX();
   double XboxRightAnalogY = Xbox.GetRawAxis(5);
 
-  if(resetAll){
+  /*if(resetAll){
     LeftMotorThree.SetSelectedSensorPosition(0);
     RightMotorOne.SetSelectedSensorPosition(0);
     ElevatorMotorOne.SetSelectedSensorPosition(0);
     CargoIntake.Set(true);
     HatchIntake.Set(false);
     resetAll = false;
-  }
+  }*/
 
   /*auto inst = nt::NetworkTableInstance::GetDefault();
   std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
@@ -155,8 +161,8 @@ void Robot::RobotPeriodic() {
     ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
     ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
   } else {
-    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
+    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
   }
 
   //Intakes
