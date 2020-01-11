@@ -149,12 +149,12 @@ void Robot::RobotPeriodic() {
   }
 
   //Intakes
-  if (Xbox.GetRawButtonPressed(3) && !Xbox.GetRawButtonPressed(1)){
-    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.5);
-  } else if (Xbox.GetRawButtonPressed(1)){
-    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.5);
+  if (Xbox.GetRawButton(3) && !Xbox.GetRawButton(1)){
+    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.8);
+  } else if (Xbox.GetRawButton(1)){
+    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 1);
   } else {
-    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
+    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.3);
   }
   
   //Drive Code
