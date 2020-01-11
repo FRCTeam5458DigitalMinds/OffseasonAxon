@@ -50,7 +50,7 @@ frc::DigitalInput HatchLimitLeft{1};
 frc::DigitalInput HatchLimitRight{2};
 
 //Bools
-bool resetEncoders = true;
+bool resetAll = false;
 
 // Pneumatics
 frc::Solenoid CargoIntake{0};
@@ -104,11 +104,13 @@ void Robot::RobotPeriodic() {
   double WheelX = RaceWheel.GetX();
   double XboxRightAnalogY = Xbox.GetRawAxis(5);
 
-  if(resetEncoders){
+  if(resetAll){
     LeftMotorThree.SetSelectedSensorPosition(0);
     RightMotorOne.SetSelectedSensorPosition(0);
     ElevatorMotorOne.SetSelectedSensorPosition(0);
-    resetEncoders = false;
+    CargoIntake.Set(true);
+    HatchIntake.Set(false);
+    resetAll = false;
   }
 
   /*auto inst = nt::NetworkTableInstance::GetDefault();
@@ -138,9 +140,12 @@ void Robot::RobotPeriodic() {
   //Information to be printed
   frc::SmartDashboard::PutNumber("RightMotorEncoder: ", RightMotorOne.GetSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("LeftMotorThree: ", LeftMotorThree.GetSelectedSensorPosition());
+  frc::SmartDashboard::PutNumber("HatchLimitLeft:", HatchLimitLeft.Get());
+  frc::SmartDashboard::PutNumber("HatchLimitRight:", HatchLimitRight.Get());
+  frc::SmartDashboard::PutNumber("HatchIntake:", HatchIntake.Get());
 
   // Elevator Limit Switch
-  if(ElevatorLimitBottom.Get()) {
+  if(!ElevatorLimitBottom.Get()) {
     ElevatorMotorOne.SetSelectedSensorPosition(0);
   }
 
@@ -169,11 +174,10 @@ void Robot::RobotPeriodic() {
   }
   
   //Hatch Intake 
-  if(JoyAccel1.GetRawButton(4)){
+  if(JoyAccel1.GetRawButtonPressed(3)){
     HatchIntake.Set(!HatchIntake.Get());        
   }
-
-  if ((!HatchLimitLeft.Get() || !HatchLimitRight.Get()) && !HatchIntake.Get()){
+  else if ((!HatchLimitLeft.Get() || !HatchLimitRight.Get()) && !HatchIntake.Get() && !JoyAccel1.GetRawButton(3)){
     HatchIntake.Set(true);
   }
 
