@@ -146,13 +146,13 @@ void Robot::RobotPeriodic() {
   //Information to be printed
   frc::SmartDashboard::PutNumber("RightMotorEncoder: ", RightMotorOne.GetSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("LeftMotorThree: ", LeftMotorThree.GetSelectedSensorPosition());
-  frc::SmartDashboard::PutNumber("HatchLimitLeft:", HatchLimitLeft.Get());
+  /*frc::SmartDashboard::PutNumber("HatchLimitLeft:", HatchLimitLeft.Get());
   frc::SmartDashboard::PutNumber("HatchLimitRight:", HatchLimitRight.Get());
   frc::SmartDashboard::PutNumber("HatchIntake:", HatchIntake.Get());
-  frc::SmartDashboard::PutNumber("ElevatorLimitBottom:", ElevatorLimitBottom.Get());
+  frc::SmartDashboard::PutNumber("ElevatorLimitBottom:", ElevatorLimitBottom.Get());*/
 
   // Elevator Limit Switch
-  if(!ElevatorLimitBottom.Get()) {
+  /*if(!ElevatorLimitBottom.Get()) {
     ElevatorMotorOne.SetSelectedSensorPosition(0);
   }
 
@@ -161,8 +161,8 @@ void Robot::RobotPeriodic() {
     ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
     ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
   } else {
-    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
-    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.1);
+    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.15);
+    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.15);
   }
 
   //Intakes
@@ -186,7 +186,7 @@ void Robot::RobotPeriodic() {
   }
   else if ((!HatchLimitLeft.Get() || !HatchLimitRight.Get()) && !HatchIntake.Get() && !JoyAccel1.GetRawButton(3)){
     HatchIntake.Set(true);
-  }
+  }*/
 
   //Drive Code
   //Point Turning
