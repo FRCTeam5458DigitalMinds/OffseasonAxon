@@ -161,13 +161,8 @@ void Robot::RobotPeriodic() {
     ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
     ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, XboxRightAnalogY * 0.5);
   } else {
-<<<<<<< HEAD
     ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.15);
     ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.15);
-=======
-    ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
-    ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
->>>>>>> af1b6ae66bf145875663d41dc3461086453bf821
   }
 
   //Intakes
@@ -192,6 +187,20 @@ void Robot::RobotPeriodic() {
   else if ((!HatchLimitLeft.Get() || !HatchLimitRight.Get()) && !HatchIntake.Get() && !JoyAccel1.GetRawButton(3)){
     HatchIntake.Set(true);
   }*/
+
+  //Makes one 360 degree rotation
+  if (JoyAccel1.GetRawButtonPressed(1)){
+    LeftMotorThree.SetSelectedSensorPosition(0);
+    RightMotorOne.SetSelectedSensorPosition(0);
+  } 
+  else if (JoyAccel1.GetRawButton(1) && (LeftMotorThree.GetSelectedSensorPosition() < 25000 && RightMotorOne.GetSelectedSensorPosition() > -25000)){
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+  }
 
   //Drive Code
   //Point Turning
