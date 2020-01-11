@@ -143,6 +143,7 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("HatchLimitLeft:", HatchLimitLeft.Get());
   frc::SmartDashboard::PutNumber("HatchLimitRight:", HatchLimitRight.Get());
   frc::SmartDashboard::PutNumber("HatchIntake:", HatchIntake.Get());
+  frc::SmartDashboard::PutNumber("ElevatorLimitBottom:", ElevatorLimitBottom.Get());
 
   // Elevator Limit Switch
   if(!ElevatorLimitBottom.Get()) {
