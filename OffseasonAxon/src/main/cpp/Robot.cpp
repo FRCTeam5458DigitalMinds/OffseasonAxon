@@ -23,11 +23,10 @@
 #include <frc/drive/DifferentialDrive.h>
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableInstance.h"
+#include <frc/Solenoid.h>
 
 
 TalonSRX srx = {0};
-
-//Motors
 
 // Right Side Drive Motors
 WPI_TalonSRX RightMotorOne{15}; // Encoder
@@ -42,10 +41,18 @@ WPI_TalonSRX LeftMotorThree{0}; // Encoder
 WPI_TalonSRX ElevatorMotorOne{12};
 WPI_TalonSRX ElevatorMotorTwo{3}; // Encoder
 
+// Cargo Intake Motor
+WPI_VictorSPX CargoIntakeMotor{4};
+
 // Limit Switches
 frc::DigitalInput ElevatorLimitBottom{0}; 
 
+//Bools
+bool resetEncoders = true;
+
 // Pneumatics
+frc::Solenoid CargoIntake{0};
+bool cargoButton = false;
 
 //Joysticks, RaceWheel, and Xbox Controller
 frc::Joystick JoyAccel1{0}, Xbox{1}, RaceWheel{2};
@@ -57,17 +64,20 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-
   srx.Set (ControlMode::PercentOutput, 0);
 
+  //Inverted Drive Train Motors
   LeftMotorOne.SetInverted(true);
   LeftMotorTwo.SetInverted(true);
   LeftMotorThree.SetInverted(true);  
 
+  //Pneumatic Intakes
+  CargoIntake.Set(false);
+
   //Elevator Motor
   ElevatorMotorOne.SetSelectedSensorPosition(0.0);
 
-  //Drivetrain motors
+  //Drivetrain Motor Encoders
   LeftMotorThree.SetSelectedSensorPosition(0.0);
   RightMotorOne.SetSelectedSensorPosition(0.0);
 }
@@ -88,10 +98,41 @@ void Robot::RobotPeriodic() {
   double JoyY = -JoyAccel1.GetY();
   double WheelX = RaceWheel.GetX();
   double XboxRightAnalogY = Xbox.GetRawAxis(5);
+
+  if(resetEncoders){
+    LeftMotorThree.SetSelectedSensorPosition(0);
+    RightMotorOne.SetSelectedSensorPosition(0);
+    ElevatorMotorOne.SetSelectedSensorPosition(0);
+    resetEncoders = false;
+  }
+
+  /*auto inst = nt::NetworkTableInstance::GetDefault();
+  std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+  double targetOffsetAngle_Horizontal = table->GetNumber("tx", 0.0);
+  double fractionAwayFromTarget = targetOffsetAngle_Horizontal/54;
+
+  double numberOfTargets = table->GetNumber("tv", 0.0);
+
+  if (numberOfTargets > 0){
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+  } else {
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+  }*/
+
   
   //Information to be printed
-  std::cout << "Right: " << RightMotorOne.GetSelectedSensorPosition() << std::endl;
-  std::cout << "Left: " << LeftMotorThree.GetSelectedSensorPosition() << std::endl;
+  frc::SmartDashboard::PutNumber("RightMotorEncoder: ", RightMotorOne.GetSelectedSensorPosition());
+  frc::SmartDashboard::PutNumber("LeftMotorThree: ", LeftMotorThree.GetSelectedSensorPosition());
 
   // Elevator Limit Switch
   if(ElevatorLimitBottom.Get()) {
@@ -105,6 +146,15 @@ void Robot::RobotPeriodic() {
   } else {
     ElevatorMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     ElevatorMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+  }
+
+  //Intakes
+  if (Xbox.GetRawButtonPressed(3) && !Xbox.GetRawButtonPressed(1)){
+    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.5);
+  } else if (Xbox.GetRawButtonPressed(1)){
+    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.5);
+  } else {
+    CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.1);
   }
   
   //Drive Code
