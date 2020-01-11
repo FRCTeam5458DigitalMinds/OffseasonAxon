@@ -46,6 +46,8 @@ WPI_VictorSPX CargoIntakeMotor{4};
 
 // Limit Switches
 frc::DigitalInput ElevatorLimitBottom{0}; 
+frc::DigitalInput HatchLimitLeft{1};
+frc::DigitalInput HatchLimitRight{2};
 
 //Bools
 bool resetEncoders = true;
@@ -53,6 +55,8 @@ bool resetEncoders = true;
 // Pneumatics
 frc::Solenoid CargoIntake{0};
 bool cargoButton = false;
+frc::Solenoid HatchIntake{1};
+bool hatchButton = false;
 
 //Joysticks, RaceWheel, and Xbox Controller
 frc::Joystick JoyAccel1{0}, Xbox{1}, RaceWheel{2};
@@ -73,6 +77,7 @@ void Robot::RobotInit() {
 
   //Pneumatic Intakes
   CargoIntake.Set(false);
+  HatchIntake.Set(false);
 
   //Elevator Motor
   ElevatorMotorOne.SetSelectedSensorPosition(0.0);
@@ -163,6 +168,15 @@ void Robot::RobotPeriodic() {
     CargoIntake.Set(!CargoIntake.Get());
   }
   
+  //Hatch Intake 
+  if(JoyAccel1.GetRawButton(4)){
+    HatchIntake.Set(!HatchIntake.Get());        
+  }
+
+  if ((!HatchLimitLeft.Get() || !HatchLimitRight.Get()) && !HatchIntake.Get()){
+    HatchIntake.Set(true);
+  }
+
   //Drive Code
   //Point Turning
   if (RaceWheel.GetRawButton(5)) {
