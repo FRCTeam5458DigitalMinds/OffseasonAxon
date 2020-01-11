@@ -149,12 +149,17 @@ void Robot::RobotPeriodic() {
   }
 
   //Intakes
+  //Cargo
   if (Xbox.GetRawButton(3) && !Xbox.GetRawButton(1)){
     CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.8);
   } else if (Xbox.GetRawButton(1)){
     CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 1);
   } else {
     CargoIntakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.3);
+  }
+
+  if(Xbox.GetRawButtonPressed(2)){
+    CargoIntake.Set(!CargoIntake.Get());
   }
   
   //Drive Code
