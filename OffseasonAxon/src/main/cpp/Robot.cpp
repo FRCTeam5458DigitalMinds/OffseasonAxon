@@ -49,9 +49,6 @@ frc::DigitalInput ElevatorLimitBottom{0};
 frc::DigitalInput HatchLimitLeft{1};
 frc::DigitalInput HatchLimitRight{2};
 
-//Bools
-bool resetAll = false;
-
 // Pneumatics
 frc::Solenoid CargoIntake{0};
 bool cargoButton = false;
@@ -74,20 +71,6 @@ void Robot::RobotInit() {
   LeftMotorOne.SetInverted(true);
   LeftMotorTwo.SetInverted(true);
   LeftMotorThree.SetInverted(true);  
-
-  //Pneumatic Intakes
-  CargoIntake.Set(false);
-  HatchIntake.Set(false);
-
-  //Elevator Motor
-  ElevatorMotorOne.SetSelectedSensorPosition(0.0);
-
-  //Drivetrain Motor Encoders
-  LeftMotorThree.SetSelectedSensorPosition(0);
-  RightMotorOne.SetSelectedSensorPosition(0);
-  ElevatorMotorOne.SetSelectedSensorPosition(0);
-  CargoIntake.Set(false);
-  HatchIntake.Set(false);
 }
 
 
@@ -106,15 +89,6 @@ void Robot::RobotPeriodic() {
   double JoyY = -JoyAccel1.GetY();
   double WheelX = RaceWheel.GetX();
   double XboxRightAnalogY = Xbox.GetRawAxis(5);
-
-  if(resetAll){
-    LeftMotorThree.SetSelectedSensorPosition(0);
-    RightMotorOne.SetSelectedSensorPosition(0);
-    ElevatorMotorOne.SetSelectedSensorPosition(0);
-    CargoIntake.Set(true);
-    HatchIntake.Set(false);
-    resetAll = false;
-  }
 
   /*auto inst = nt::NetworkTableInstance::GetDefault();
   std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
@@ -186,17 +160,20 @@ void Robot::RobotPeriodic() {
   }*/
 
   //Makes one 360 degree rotation
-  if (JoyAccel1.GetRawButtonPressed(1)){
-    LeftMotorThree.SetSelectedSensorPosition(0);
-    RightMotorOne.SetSelectedSensorPosition(0);
-  } 
-  else if (JoyAccel1.GetRawButton(1) && (LeftMotorThree.GetSelectedSensorPosition() < 10000 && RightMotorOne.GetSelectedSensorPosition() > -10000)){
+  if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 10000 && RightMotorOne.GetSelectedSensorPosition() > -10000){
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
+  } else {
+    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
   }
 
   //Drive Code
@@ -287,7 +264,19 @@ void Robot::AutonomousPeriodic() {
   }
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+  //Pneumatic Intakes
+  CargoIntake.Set(false);
+  HatchIntake.Set(false);
+
+  //Elevator Motor
+  ElevatorMotorOne.SetSelectedSensorPosition(0.0);
+
+  //Drivetrain Motor Encoders
+  LeftMotorThree.SetSelectedSensorPosition(0);
+  RightMotorOne.SetSelectedSensorPosition(0);
+  ElevatorMotorOne.SetSelectedSensorPosition(0);
+}
 
 void Robot::TeleopPeriodic() {}
 
