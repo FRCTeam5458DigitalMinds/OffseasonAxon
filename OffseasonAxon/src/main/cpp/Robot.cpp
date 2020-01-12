@@ -164,7 +164,7 @@ void Robot::RobotPeriodic() {
     LeftMotorThree.SetSelectedSensorPosition(0);
     RightMotorOne.SetSelectedSensorPosition(0);
   }
-  else if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 31000 && RightMotorOne.GetSelectedSensorPosition() < 31000){
+  else if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 30000 && RightMotorOne.GetSelectedSensorPosition() < 30000){
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
