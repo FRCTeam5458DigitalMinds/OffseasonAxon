@@ -160,7 +160,11 @@ void Robot::RobotPeriodic() {
   }*/
 
   //Makes one 360 degree rotation
-  if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 10000 && RightMotorOne.GetSelectedSensorPosition() > -10000){
+  if (JoyAccel1.GetRawButtonPressed(1)){
+    LeftMotorOne.SetSelectedSensorPosition(0);
+    RightMotorThree.SetSelectedSensorPosition(0);
+  }
+  else if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 24000 && RightMotorOne.GetSelectedSensorPosition() < 24000){
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
