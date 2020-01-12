@@ -168,9 +168,9 @@ void Robot::RobotPeriodic() {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
-    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
-    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
-    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
+    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
+    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
   } else {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
