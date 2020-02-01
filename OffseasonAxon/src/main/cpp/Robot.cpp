@@ -25,7 +25,6 @@
 #include "networktables/NetworkTableInstance.h"
 #include <frc/Solenoid.h>
 
-
 TalonSRX srx = {0};
 
 // Right Side Drive Motors
@@ -90,7 +89,7 @@ void Robot::RobotPeriodic() {
   double WheelX = RaceWheel.GetX();
   double XboxRightAnalogY = Xbox.GetRawAxis(5);
 
-  /*auto inst = nt::NetworkTableInstance::GetDefault();
+  auto inst = nt::NetworkTableInstance::GetDefault();
   std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
   double targetOffsetAngle_Horizontal = table->GetNumber("tx", 0.0);
   double fractionAwayFromTarget = targetOffsetAngle_Horizontal/54;
@@ -98,12 +97,21 @@ void Robot::RobotPeriodic() {
   double numberOfTargets = table->GetNumber("tv", 0.0);
 
   if (numberOfTargets > 0){
-    LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
-    LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
-    LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
-    RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
-    RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
-    RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+    if (targetOffsetAngle_Horizontal < 5 && targetOffsetAngle_Horizontal > -5){
+      LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.2);
+      LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.2);
+      LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.2);
+      RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.2);
+      RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.2);
+      RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.2);
+    } else {
+      LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
+      LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
+      LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, fractionAwayFromTarget);
+      RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+      RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+      RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -fractionAwayFromTarget);
+    }
   } else {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
@@ -111,19 +119,19 @@ void Robot::RobotPeriodic() {
     RightMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     RightMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     RightMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-  }*/
+  }
 
-  
+  /*
   //Information to be printed
   frc::SmartDashboard::PutNumber("RightMotorEncoder: ", RightMotorOne.GetSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("LeftMotorThree: ", LeftMotorThree.GetSelectedSensorPosition());
-  /*frc::SmartDashboard::PutNumber("HatchLimitLeft:", HatchLimitLeft.Get());
+  frc::SmartDashboard::PutNumber("HatchLimitLeft:", HatchLimitLeft.Get());
   frc::SmartDashboard::PutNumber("HatchLimitRight:", HatchLimitRight.Get());
   frc::SmartDashboard::PutNumber("HatchIntake:", HatchIntake.Get());
-  frc::SmartDashboard::PutNumber("ElevatorLimitBottom:", ElevatorLimitBottom.Get());*/
+  frc::SmartDashboard::PutNumber("ElevatorLimitBottom:", ElevatorLimitBottom.Get());
 
   // Elevator Limit Switch
-  /*if(!ElevatorLimitBottom.Get()) {
+  if(!ElevatorLimitBottom.Get()) {
     ElevatorMotorOne.SetSelectedSensorPosition(0);
   }
 
@@ -157,14 +165,14 @@ void Robot::RobotPeriodic() {
   }
   else if ((!HatchLimitLeft.Get() || !HatchLimitRight.Get()) && !HatchIntake.Get() && !JoyAccel1.GetRawButton(3)){
     HatchIntake.Set(true);
-  }*/
+  }
 
   //Makes one 360 degree rotation
   if (JoyAccel1.GetRawButtonPressed(1)){
     LeftMotorThree.SetSelectedSensorPosition(0);
     RightMotorOne.SetSelectedSensorPosition(0);
   }
-  else if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 30000 && RightMotorOne.GetSelectedSensorPosition() < 30000){
+  else if (JoyAccel1.GetRawButton(1) && LeftMotorThree.GetSelectedSensorPosition() < 31000 && RightMotorOne.GetSelectedSensorPosition() < 31000){
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
@@ -182,7 +190,7 @@ void Robot::RobotPeriodic() {
 
   //Drive Code
   //Point Turning
-  /*if (RaceWheel.GetRawButton(5)) {
+  if (RaceWheel.GetRawButton(5)) {
     LeftMotorOne.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorTwo.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
     LeftMotorThree.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, WheelX);
